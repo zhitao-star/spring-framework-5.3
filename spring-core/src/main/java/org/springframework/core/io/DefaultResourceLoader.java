@@ -144,15 +144,17 @@ public class DefaultResourceLoader implements ResourceLoader {
 
 	@Override
 	public Resource getResource(String location) {
+		//ResourceLoader 的核心实现类的实现方法
 		Assert.notNull(location, "Location must not be null");
 
+		//找到能够解析的解析器
 		for (ProtocolResolver protocolResolver : getProtocolResolvers()) {
 			Resource resource = protocolResolver.resolve(location, this);
 			if (resource != null) {
 				return resource;
 			}
 		}
-
+		//如果找不到解析器
 		if (location.startsWith("/")) {
 			return getResourceByPath(location);
 		}

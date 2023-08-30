@@ -89,21 +89,26 @@ public class XmlValidationModeDetector {
 	 * @see #VALIDATION_XSD
 	 */
 	public int detectValidationMode(InputStream inputStream) throws IOException {
+		//是否是注释的标记位
 		this.inComment = false;
 
 		// Peek into the file to look for DOCTYPE.
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+			//是否是dtd的验证模式  document type definition
 			boolean isDtdValidated = false;
 			String content;
 			while ((content = reader.readLine()) != null) {
 				content = consumeCommentTokens(content);
+				//不是文本 跳过
 				if (!StringUtils.hasText(content)) {
 					continue;
 				}
+				// 是否含有 DOCTYPE
 				if (hasDoctype(content)) {
 					isDtdValidated = true;
 					break;
 				}
+				//判断如果这一行包含 < ，并且 < 紧跟着的是字幕
 				if (hasOpeningTag(content)) {
 					// End of meaningful data...
 					break;
@@ -148,7 +153,9 @@ public class XmlValidationModeDetector {
 	 * <p>This method takes the current "in comment" parsing state into account.
 	 */
 	private String consumeCommentTokens(String line) {
+		//  判断当前行是否包含  <!--
 		int indexOfStartComment = line.indexOf(START_COMMENT);
+		//第一个出现的就是 <!--  并且不包含  -->
 		if (indexOfStartComment == -1 && !line.contains(END_COMMENT)) {
 			return line;
 		}

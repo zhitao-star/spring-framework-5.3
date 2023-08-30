@@ -35,7 +35,7 @@ import org.springframework.lang.Nullable;
  * <p>Fetches "spring-beans.dtd" from the class path resource
  * "/org/springframework/beans/factory/xml/spring-beans.dtd",
  * no matter whether specified as some local URL that includes "spring-beans"
- * in the DTD name or as "https://www.springframework.org/dtd/spring-beans-2.0.dtd".
+ * in the DTD name or as "<a href="https://www.springframework.org/dtd/spring-beans-2.0.dtd">...</a>".
  *
  * @author Juergen Hoeller
  * @author Colin Sampaleanu
@@ -51,6 +51,7 @@ public class BeansDtdResolver implements EntityResolver {
 	private static final Log logger = LogFactory.getLog(BeansDtdResolver.class);
 
 
+	//dtd格式的解析过程
 	@Override
 	@Nullable
 	public InputSource resolveEntity(@Nullable String publicId, @Nullable String systemId) throws IOException {
@@ -85,7 +86,7 @@ public class BeansDtdResolver implements EntityResolver {
 			}
 		}
 
-		// Fall back to the parser's default behavior.
+		// Fall back to the parser's default behavior. download from website or wherever.
 		return null;
 	}
 
